@@ -1,0 +1,31 @@
+import numpy as np
+from scipy import stats
+
+# Population mean (claimed by company)
+mu = 50
+
+# Sample data (weights in grams)
+sample = [49, 51, 52, 48, 50, 49, 53, 47, 50, 51,
+          52, 48, 49, 50, 51, 50, 52, 49, 48, 47,
+          51, 50, 52, 49, 50, 48, 51, 50, 49, 50]
+
+# Sample statistics
+sample_mean = np.mean(sample)
+sample_std = np.std(sample, ddof=1)   # sample standard deviation
+n = len(sample)
+
+# Compute Z statistic
+z = (sample_mean - mu) / (sample_std / np.sqrt(n))
+
+# Two-tailed test: find p-value
+p_value = 2 * (1 - stats.norm.cdf(abs(z)))
+
+print(f"Sample Mean = {sample_mean:.2f}")
+print(f"Z-statistic = {z:.2f}")
+print(f"P-value = {p_value:.4f}")
+
+# Decision at 5% significance
+if p_value < 0.05:
+    print("Reject Null Hypothesis: Mean is significantly different from 50g.")
+else:
+    print("Fail to Reject Null Hypothesis: No significant difference.")
